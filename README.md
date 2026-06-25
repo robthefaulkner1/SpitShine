@@ -109,3 +109,13 @@ python3 -m http.server 8000
 
 Any static host works — GitHub Pages, Netlify, Vercel, Cloudflare Pages, or traditional
 hosting. For GitHub Pages, the included `.nojekyll` file ensures all assets are served as-is.
+
+### GitHub Pages (automated)
+
+This repo ships a deploy workflow at `.github/workflows/deploy.yml`. On every push to
+`main` it publishes the site to GitHub Pages automatically.
+
+One-time setup: in **Settings → Pages**, set **Source** to **GitHub Actions** (the workflow
+also attempts to enable this on its first run). After the first successful run, your site is
+live at `https://<your-username>.github.io/SpitShine/`. To use a custom domain, add it under
+Settings → Pages and update `CONFIG["domain"]` in `build.py`.
