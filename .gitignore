@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Node (only used for local screenshot/testing tooling, never committed)
+node_modules/
+package-lock.json
