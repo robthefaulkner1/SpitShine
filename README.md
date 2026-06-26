@@ -75,12 +75,17 @@ Then re-run `python3 build.py` and update `sitemap.xml` / `robots.txt` with your
 
 ---
 
-## Forms
+## Booking & forms
 
-The contact and booking forms currently run **front-end only** — on submit they show a
+**Booking → Calendly.** Every "Book" CTA opens the Calendly scheduler in a popup, and the
+Book Appointment page (`book.html`) embeds it inline. The scheduling link lives in
+`CONFIG["calendly_url"]` — update it there and rebuild to point at a different Calendly. The
+popup wiring is in `js/main.js` (it targets links to `book.html` / `#book-form`, or any element
+with the `.book-link` class).
+
+**Contact / quote form.** The contact form runs **front-end only** — on submit it shows a
 confirmation message. To receive real submissions by email, paste a Formspree endpoint into
-`CONFIG["form_endpoint"]` and rebuild; the JS (`js/main.js`) will POST to it automatically.
-For live, real-time scheduling, embed Calendly / Acuity / GoHighLevel into `book.html`.
+`CONFIG["form_endpoint"]` and rebuild; `js/main.js` will POST to it automatically.
 
 ---
 

@@ -902,38 +902,20 @@ def build(g):
           ("Get Ready for the Transformation","We'll show up at the agreed time, fully equipped, and ready to make your vehicle look its absolute best."),
         ])}''')
 
-    book_service_checks = "".join(
-        f'<label><input type="checkbox" name="services" value="{s}"> {s}</label>'
-        for s in ["Mobile Detailing", "Ceramic Coating", "Paint Correction",
-                  "Paint Touch-Up", "Maintenance Plan", "Not Sure Yet"])
-
     book_form = f'''<section class="section section--panel" id="book-form"><div class="container">
-      {head("Request Your Appointment", "Book Now — We'll Confirm by Call or Text", "", center=True)}
-      <div style="max-width:820px;margin:0 auto">
-      <div class="form-wrap reveal">
-        <div class="form-success">You're all set! Your appointment request has been received. We'll follow up
-        shortly by call or text to confirm your date, time, and service details.</div>
-        <form data-spitshine data-endpoint="{CONFIG['form_endpoint']}" novalidate>
-          <div class="form-grid">
-            <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" name="name" required placeholder="Your name"></div>
-            <div class="field"><label>Phone Number <span class="req">*</span></label><input type="tel" name="phone" required placeholder="(210) 555-0123"></div>
-            <div class="field"><label>Email Address</label><input type="email" name="email" placeholder="you@email.com"></div>
-            <div class="field"><label>Service Location (City / ZIP)</label><input type="text" name="location" placeholder="e.g. Stone Oak, 78258"></div>
-            <div class="field full"><label>Service(s) Requested</label><div class="checkgroup">{book_service_checks}</div></div>
-            <div class="field"><label>Vehicle Year / Make / Model</label><input type="text" name="vehicle" placeholder="e.g. 2022 BMW M4"></div>
-            <div class="field"><label>Vehicle Color</label><input type="text" name="color" placeholder="e.g. Black Sapphire"></div>
-            <div class="field"><label>Preferred Date</label><input type="date" name="date"></div>
-            <div class="field"><label>Preferred Time</label>
-              <select name="time"><option>Morning</option><option>Midday</option><option>Afternoon</option></select></div>
-            <div class="field full"><label>Notes / Areas to Focus On</label>
-              <textarea name="notes" placeholder="Anything we should know — specific concerns, damage, or areas you'd like us to focus on."></textarea></div>
-          </div>
-          <div style="margin-top:22px">{submit_btn("Book My Appointment", "calendar")}</div>
-          <p class="form-note">Tip: embed a live scheduling tool (Calendly, Acuity, or GoHighLevel) here to let
-          customers pick real-time slots. Until then, this form sends a request you confirm manually. Connect
-          your endpoint in <code>build.py → CONFIG["form_endpoint"]</code>.</p>
-        </form>
-      </div></div>
+      {head("Pick Your Time", "Book Your Appointment Online",
+            "Choose a slot that works for you below and get instant confirmation. "
+            "Prefer to talk first? Call or text us anytime.", center=True)}
+      <div style="max-width:940px;margin:0 auto">
+        <div class="calendly-inline-widget reveal" data-url="{CONFIG['calendly_url']}"
+             style="min-width:320px;height:720px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#000;"></div>
+        <p class="center" style="margin-top:22px;color:var(--silver)">Not seeing the scheduler?
+          <a href="{CONFIG['calendly_url']}" target="_blank" rel="noopener">Open it in a new tab</a>.</p>
+        <div class="btn-row center" style="justify-content:center;margin-top:18px">
+          {btn("Call or Text " + PH_D, "tel:" + PHONE, "secondary", ico="phone")}
+          {btn("Get a Free Quote First", "contact.html", "ghost")}
+        </div>
+      </div>
     </div></section>'''
 
     book_expect = section(
