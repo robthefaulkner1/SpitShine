@@ -38,7 +38,7 @@
   --font-display: "Oswald", "Arial Narrow", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-  --nav-h: 72px;
+  --nav-h: 86px;
 }
 
 /* ---------- Reset / base ---------- */
@@ -146,6 +146,9 @@ p { color: var(--light); }
 .brand { display: flex; align-items: center; gap: 11px; font-family: var(--font-display); }
 .brand:hover { color: inherit; }
 .brand .mark { width: 38px; height: 38px; flex: none; }
+.brand-logo { width: auto; flex: none; }
+.brand-logo--nav { height: 68px; }
+.brand-logo--footer { height: 112px; }
 .brand .brand-text { line-height: 1; }
 .brand .brand-name {
   display: block; font-weight: 700; text-transform: uppercase;
@@ -461,6 +464,9 @@ p { color: var(--light); }
   .step .num { width: 46px; height: 46px; font-size: 1.3rem; }
 }
 @media (max-width: 600px) {
+  :root { --nav-h: 70px; }
+  .brand-logo--nav { height: 52px; }
+  .brand-logo--footer { height: 96px; }
   .grid-2, .grid-3, .grid-4, .stats, .form-grid, .checkgroup, .footer-grid { grid-template-columns: 1fr; }
   body { font-size: 16px; }
   .btn { width: 100%; justify-content: center; }

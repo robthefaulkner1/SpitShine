@@ -19,8 +19,8 @@ CONFIG = {
     "name": "Spit Shine San Antonio",
     "slogan": "San Antonio's Mobile Detailing & Ceramic Coating Specialists — We Come to You.",
     "domain": "https://spitshinesa.com",          # update to your live domain
-    "phone_display": "(210) 555-0199",             # << REPLACE with real number
-    "phone_tel": "+12105550199",                   # << REPLACE (E.164 format)
+    "phone_display": "(210) 392-2782",             # business phone (display)
+    "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
     "email": "hello@spitshinesa.com",              # << REPLACE with real email
     "hours": "Mon–Sat: 7:00 AM – 6:00 PM · Closed Sunday",
     "city": "San Antonio",
@@ -115,11 +115,9 @@ def header(active):
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html" aria-label="{CONFIG['name']} home">
-      {MARK}
-      <span class="brand-text">
-        <span class="brand-name">Spit Shine</span>
-        <span class="brand-sub">San Antonio</span>
-      </span>
+      <img class="brand-logo brand-logo--nav" src="assets/logo.png" width="512" height="512"
+           alt="San Antonio Spit Shine — Mobile Detailing &amp; Ceramic Coating Specialists"
+           decoding="async">
     </a>
     <nav class="nav-links" aria-label="Primary">{links}</nav>
     <div class="nav-cta">
@@ -159,9 +157,10 @@ def footer():
   <div class="container">
     <div class="footer-grid">
       <div class="footer-about">
-        <a class="brand" href="index.html">{MARK}
-          <span class="brand-text"><span class="brand-name">Spit Shine</span>
-          <span class="brand-sub">San Antonio</span></span></a>
+        <a class="brand" href="index.html">
+          <img class="brand-logo brand-logo--footer" src="assets/logo.png" width="512" height="512"
+               alt="San Antonio Spit Shine — Mobile Detailing &amp; Ceramic Coating Specialists"
+               loading="lazy" decoding="async"></a>
         <p>{CONFIG['slogan']} Locally owned and operated — bringing dealership-quality
         detailing, ceramic coatings, and paint correction right to your driveway.</p>
         <p style="margin-top:14px;color:var(--silver);font-size:.85rem">Licensed, insured &amp; professionally trained.</p>
@@ -241,8 +240,11 @@ def page(filename, title, desc, active, hero_html, body_html, extra_schema=None)
 <meta property="og:description" content="{desc}">
 <meta property="og:site_name" content="{CONFIG['name']}">
 <meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{CONFIG['domain']}/assets/logo.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta name="twitter:image" content="{CONFIG['domain']}/assets/logo.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
