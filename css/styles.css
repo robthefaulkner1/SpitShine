@@ -247,8 +247,8 @@ p { color: var(--light); }
 .card .icon svg { width: 28px; height: 28px; color: var(--orange-bright); }
 .card h3 { margin-bottom: 10px; }
 .card p { color: var(--silver); font-size: .98rem; }
-.card .card-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
-.card .card-link svg { width: 15px; height: 15px; }
+.card-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+.card-link svg { width: 15px; height: 15px; flex: none; }
 
 /* feature list with orange check */
 .checklist li { position: relative; padding-left: 34px; margin-bottom: 14px; color: var(--light); }

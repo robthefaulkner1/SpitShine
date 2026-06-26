@@ -145,7 +145,7 @@ def footer():
         ("Ceramic Coatings", "ceramic-coatings.html"),
         ("Paint Correction", "paint-correction.html"),
         ("Paint Touch-Up", "services.html#touchup"),
-        ("Maintenance Plans", "services.html"),
+        ("Maintenance Plans", "services.html#maintenance"),
     ])
     comp = "".join(f'<li><a href="{h}">{t}</a></li>' for t, h in [
         ("About Us", "about.html"),

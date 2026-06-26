@@ -280,8 +280,24 @@ def build(g):
             "difference between us and a detailing shop? We come to you.",
         buttons=QUOTE + CALL, page_class="hero--page")
 
+    def pkg_card(name, desc, tag=None, featured=False):
+        cls = "pkg featured reveal" if featured else "pkg reveal"
+        tg = f'<span class="tag">{tag}</span>' if tag else ''
+        return (f'<div class="{cls}">{tg}<h3>{name}</h3>'
+                f'<p class="desc">{desc}</p>'
+                f'<a class="card-link" href="contact.html" style="margin-top:auto;padding-top:14px">'
+                f'Get a Quote {icon("arrow")}</a></div>')
+
+    def packages_block(title, items, cols=3):
+        cards = "".join(pkg_card(*it) for it in items)
+        return (f'<div style="margin-top:48px">'
+                f'<h3 class="center" style="font-size:1.4rem;margin-bottom:8px">{title}</h3>'
+                f'<div class="divider-orange" style="margin:0 auto 30px"></div>'
+                f'<div class="grid grid-{cols}">{cards}</div></div>')
+
     def service_block(anchor, ic, eyebrow, title, intro, included_title, included, benefits,
-                      ideal, process_txt, ctas, reverse=False, ph_label="", ph_sub=""):
+                      ideal, process_txt, ctas, reverse=False, ph_label="", ph_sub="",
+                      packages_html=""):
         media = placeholder(ph_label, ph_sub)
         body = f'''<div class="body reveal">
             <div class="icon" style="width:54px;height:54px;border-radius:12px;display:grid;place-items:center;background:rgba(204,85,0,.12);border:1px solid rgba(204,85,0,.3);margin-bottom:16px">{icon(ic)}</div>
@@ -299,9 +315,10 @@ def build(g):
         <div class="grid grid-2" style="margin-top:24px">
           <div class="card reveal"><h3 style="font-size:1.15rem">Ideal For</h3><p style="color:var(--silver)">{ideal}</p></div>
           <div class="card reveal"><h3 style="font-size:1.15rem">Our Process</h3><p style="color:var(--silver)">{process_txt}</p></div>
-        </div>
-        <div class="btn-row reveal" style="margin-top:30px">{ctas}</div>'''
-        return f'<section class="section" id="{anchor}"><div class="container">{split}{cols}</div></section>'
+        </div>'''
+        btnrow = f'<div class="btn-row reveal" style="margin-top:30px">{ctas}</div>'
+        return (f'<section class="section" id="{anchor}"><div class="container">'
+                f'{split}{cols}{packages_html}{btnrow}</div></section>')
 
     s1 = service_block(
         "detailing", "spray", "Service 01", "Mobile Auto Detailing",
@@ -321,7 +338,24 @@ def build(g):
         "We assess your vehicle's condition, then methodically work top to bottom on the exterior and "
         "front to back on the interior. Every section is inspected before we move to the next.",
         btn("Book a Mobile Detail", "book.html", "primary") + btn("Get a Quote", "contact.html", "secondary"),
-        ph_label="Full Interior &amp; Exterior Detail", ph_sub="[ Image: gleaming finished detail ]")
+        ph_label="Full Interior &amp; Exterior Detail", ph_sub="[ Image: gleaming finished detail ]",
+        packages_html=packages_block("Mobile Detailing Packages", [
+            ("The Spit Shine Express",
+             "The fast-track to a clean, fresh vehicle. Perfect for busy San Antonians who want a polished "
+             "look without a full-day commitment. Exterior wash, hand dry, tire dressing, and interior "
+             "vacuum and wipe-down."),
+            ("The Full Spit Shine",
+             "The complete treatment. Interior and exterior detail with hand wash, clay bar, dressing, deep "
+             "interior clean, glass treatment, and more. This is the service that makes people turn heads "
+             "in the parking lot."),
+            ("The Spit Shine Signature",
+             "Our flagship premium detail — the works. Everything in The Full Spit Shine, plus a machine "
+             "polish, sealant, leather conditioning, and engine bay wipe-down. Reserve this one for special "
+             "occasions or when your vehicle needs to look absolutely flawless.", "Flagship", True),
+            ("The Shine Time Treatment",
+             "A targeted interior or exterior refresh for vehicles that need attention in one specific area. "
+             "Great for picking up where the last service left off."),
+        ], cols=4))
 
     s2 = service_block(
         "ceramic", "droplet", "Service 02", "Ceramic Coatings",
@@ -341,7 +375,21 @@ def build(g):
         "detailed aftercare instructions.",
         btn("Learn About Ceramic Coatings", "ceramic-coatings.html", "primary") +
         btn("Get a Ceramic Quote", "contact.html", "secondary"),
-        reverse=True, ph_label="Ceramic Coating Water-Beading", ph_sub="[ Image: hydrophobic beading demo ]")
+        reverse=True, ph_label="Ceramic Coating Water-Beading", ph_sub="[ Image: hydrophobic beading demo ]",
+        packages_html=packages_block("Ceramic Coating Packages", [
+            ("The Liquid Armor — Entry Coat",
+             "A professional-grade single-layer ceramic coating providing 2–3 years of protection. "
+             "Hydrophobic barrier, enhanced gloss, and UV protection. Ideal for daily drivers seeking "
+             "long-term protection at an accessible price."),
+            ("The Liquid Armor — Pro Shield",
+             "A two-layer ceramic system with 4–5 years of durability. Superior scratch resistance, deeper "
+             "gloss, and advanced hydrophobic performance. Our most popular coating package for enthusiasts "
+             "and commuters alike.", "Most Popular", True),
+            ("The Mirror Maker — Ultimate Guard",
+             "The pinnacle of paint protection. Multi-layer professional ceramic coating system with up to "
+             "7+ years of protection, maximum gloss depth, and the kind of reflective clarity that makes "
+             "your vehicle look like a mirror on wheels."),
+        ], cols=3))
 
     s3 = service_block(
         "correction", "sparkle", "Service 03", "Paint Correction",
@@ -362,7 +410,20 @@ def build(g):
         "focused lighting to ensure every defect is addressed.",
         btn("Learn About Paint Correction", "paint-correction.html", "primary") +
         btn("Get a Correction Quote", "contact.html", "secondary"),
-        ph_label="Before &amp; After Paint Correction", ph_sub="[ Image: split before/after panel ]")
+        ph_label="Before &amp; After Paint Correction", ph_sub="[ Image: split before/after panel ]",
+        packages_html=packages_block("Paint Correction Packages", [
+            ("The Gloss Boss — One-Step",
+             "Single-stage machine polish targeting light swirl marks, minor scratches, and dull oxidation. "
+             "Restores clarity and gloss to paint with moderate imperfections."),
+            ("The Showroom Revival — Two-Step",
+             "Two-stage paint correction combining a cutting compound and finishing polish. Removes deeper "
+             "swirls, water spots, and scratches while refining the surface to near-perfect clarity.",
+             "Most Popular", True),
+            ("The Glass Act — Full Correction",
+             "Multi-stage paint correction for vehicles with severe paint defects, heavy oxidation, or "
+             "neglected finishes. This is the transformation package — before and after photos are almost "
+             "unbelievable."),
+        ], cols=3))
 
     s4 = service_block(
         "touchup", "brush", "Service 04", "Paint Touch-Up Services",
@@ -382,6 +443,20 @@ def build(g):
         btn("Get a Touch-Up Quote", "contact.html", "primary"),
         reverse=True, ph_label="Professional Paint Touch-Up", ph_sub="[ Image: chip repair close-up ]")
 
+    maintenance = section(
+        f'''{head("Maintenance Plans", "Keep It Looking New Between Services",
+        "Already had a full detail or a ceramic coating? Keep that just-finished look with a recurring "
+        "maintenance plan built around your vehicle.")}
+        <div class="grid grid-2" style="max-width:860px;margin:0 auto">
+          {pkg_card("The Upkeep", "Monthly maintenance wash and detail to keep your vehicle looking freshly "
+                    "detailed between full services. Perfect for customers who just had a Spit Shine "
+                    "Signature or ceramic coating.")}
+          {pkg_card("The Coat Check", "Ceramic coating maintenance service including a pH-neutral hand wash, "
+                    "decontamination, and reapplication of a coating booster. Extends the life of your "
+                    "ceramic coating and maintains that just-coated look.")}
+        </div>''',
+        cls="section section--alt", extra=' id="maintenance"')
+
     services_cta = cta_band(
         "Not Sure Which Service Is Right for You?",
         "Reach out and tell us about your vehicle and what you'd like to accomplish. We'll recommend the "
@@ -393,7 +468,7 @@ def build(g):
          "Explore the full range of mobile auto detailing services from Spit Shine San Antonio — including "
          "ceramic coatings, paint correction, and paint touch-up. We come to you!",
          "services.html", services_hero,
-         trustbar() + s1 + s2 + s3 + s4 + services_cta)
+         trustbar() + s1 + s2 + s3 + s4 + maintenance + services_cta)
 
     # ======================================================================
     # CERAMIC COATINGS
