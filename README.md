@@ -107,15 +107,26 @@ python3 -m http.server 8000
 
 ## Deploy
 
-Any static host works — GitHub Pages, Netlify, Vercel, Cloudflare Pages, or traditional
-hosting. For GitHub Pages, the included `.nojekyll` file ensures all assets are served as-is.
+Any static host works — Netlify, Cloudflare Pages, Vercel, GitHub Pages, or traditional
+hosting. This repo is set up for **Netlify**.
 
-### GitHub Pages (automated)
+### Netlify (recommended)
 
-This repo ships a deploy workflow at `.github/workflows/deploy.yml`. On every push to
-`main` it publishes the site to GitHub Pages automatically.
+The repo ships a `netlify.toml` that tells Netlify how to publish the site:
 
-One-time setup: in **Settings → Pages**, set **Source** to **GitHub Actions** (the workflow
-also attempts to enable this on its first run). After the first successful run, your site is
-live at `https://<your-username>.github.io/SpitShine/`. To use a custom domain, add it under
-Settings → Pages and update `CONFIG["domain"]` in `build.py`.
+- `publish = "."` — serves the static files from the repo root
+- `command = "python3 build.py"` — regenerates the pages from `build.py` + `pages_content.py`
+  on each deploy, so the live site always matches the source (no pip install needed —
+  `build.py` uses only the Python standard library)
+
+**One-time setup (in the Netlify dashboard):**
+1. Sign in at [app.netlify.com](https://app.netlify.com) (free).
+2. **Add new site → Import an existing project → GitHub**, authorize, and pick
+   `robthefaulkner1/SpitShine`.
+3. Netlify auto-detects `netlify.toml` — just click **Deploy**. Build settings are filled in
+   for you (publish `.`, command `python3 build.py`).
+4. Every push to `main` then redeploys automatically. Netlify gives you a free
+   `https://<name>.netlify.app` URL.
+
+**Custom domain:** add it under **Site settings → Domain management** in Netlify, then update
+`CONFIG["domain"]` in `build.py` (used for canonical URLs, the sitemap, and schema) and rebuild.
