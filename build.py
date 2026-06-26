@@ -33,10 +33,19 @@ CONFIG = {
     # Calendly scheduling link. Every "Book" CTA opens this in a popup, and
     # the Book Appointment page embeds it inline.
     "calendly_url": "https://calendly.com/faulkner-rob14?background_color=000000&text_color=cb5b11&primary_color=9a9a9a",
+    # Public profile / listing URLs. Paste the real URL as you create each
+    # listing — they auto-populate the footer links AND the schema "sameAs"
+    # (which tells Google these profiles are the same business). Leave "#"
+    # for ones you don't have yet. See BUSINESS-LISTINGS.md for the full list.
     "social": {
+        "Google": "#",      # Google Business Profile
         "Facebook": "#",
         "Instagram": "#",
-        "Google": "#",
+        "Yelp": "#",
+        "Nextdoor": "#",
+        "BBB": "#",         # Better Business Bureau
+        "Apple Maps": "#",  # Apple Business Connect
+        "Bing": "#",        # Bing Places
     },
 }
 
@@ -157,8 +166,13 @@ def footer():
         ("Contact", "contact.html"),
         ("Book Appointment", "book.html"),
     ])
-    socials = " ".join(f'<a href="{url}" aria-label="{n}">{n}</a>'
-                       for n, url in CONFIG["social"].items())
+    # Only render profile links that have a real URL (skip "#" placeholders).
+    real_socials = [(n, u) for n, u in CONFIG["social"].items() if u and u != "#"]
+    socials = "".join(
+        f'<a href="{u}" aria-label="{n}" target="_blank" rel="noopener">{n}</a>'
+        for n, u in real_socials)
+    socials_row = (f'<p class="footer-social" style="margin-top:8px">Find us on: {socials}</p>'
+                   if real_socials else "")
     return f'''<footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -179,7 +193,7 @@ def footer():
         <a href="mailto:{CONFIG['email']}">{icon('mail')}{CONFIG['email']}</a>
         <p>{icon('clock')}{CONFIG['hours']}</p>
         <p>{icon('pin')}Serving greater San Antonio &amp; the Hill Country</p>
-        <p style="margin-top:8px">{socials}</p>
+        {socials_row}
       </div>
     </div>
     <div class="footer-bottom">
