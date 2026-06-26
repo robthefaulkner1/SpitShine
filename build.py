@@ -27,6 +27,9 @@ CONFIG = {
     "region": "TX",
     # Optional: paste a Formspree/endpoint URL to make the forms live.
     "form_endpoint": "https://formspree.io/f/REPLACE_ME",
+    # Calendly scheduling link. Every "Book" CTA opens this in a popup, and
+    # the Book Appointment page embeds it inline.
+    "calendly_url": "https://calendly.com/faulkner-rob14?background_color=000000&text_color=cb5b11&primary_color=9a9a9a",
     "social": {
         "Facebook": "#",
         "Instagram": "#",
@@ -249,9 +252,11 @@ def page(filename, title, desc, active, hero_html, body_html, extra_schema=None)
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 {schema_html}
 </head>
-<body>
+<body data-calendly="{CONFIG['calendly_url']}">
 {header(active)}
 <main id="main">
 {hero_html}

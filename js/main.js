@@ -63,6 +63,25 @@
     el.textContent = new Date().getFullYear();
   });
 
+  /* ---- Calendly booking ----
+     Every "Book" CTA (links to book.html / #book-form, or anything tagged
+     .book-link) opens the Calendly scheduler in a popup. If Calendly hasn't
+     loaded yet, the link falls back to navigating to the Book page.        */
+  var calUrl = document.body.getAttribute("data-calendly");
+  if (calUrl) {
+    var bookLinks = document.querySelectorAll(
+      'a[href$="book.html"], a[href$="book.html#book-form"], a[href="#book-form"], .book-link'
+    );
+    bookLinks.forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        if (window.Calendly && typeof window.Calendly.initPopupWidget === "function") {
+          e.preventDefault();
+          window.Calendly.initPopupWidget({ url: calUrl });
+        }
+      });
+    });
+  }
+
   /* ---- Forms (front-end demo handling) ----
      No backend is wired yet. We intercept submission, show a
      confirmation, and (if a real endpoint is configured on the
