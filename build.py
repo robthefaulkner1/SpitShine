@@ -24,8 +24,8 @@ CONFIG = {
     "google_site_verification": "dT4FZpMWy8QvIBUkkUJdFKKe6Mr5CoMp9AwIVbbx6-E",
     "phone_display": "(210) 392-2782",             # business phone (display)
     "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
-    "email": "hello@getspitshined.com",            # << CONFIRM this inbox exists (or set your real email)
-    "hours": "Mon–Sat: 7:00 AM – 6:00 PM · Closed Sunday",
+    "email": "rob@getspitshined.com",
+    "hours": "Mon–Sun: 6:00 AM – 9:00 PM",
     "city": "San Antonio",
     "region": "TX",
     # Optional: paste a Formspree/endpoint URL to make the forms live.
@@ -107,6 +107,27 @@ def placeholder(label, sub=""):
     s = f'<small>{sub}</small>' if sub else ""
     return (f'<div class="media reveal"><div class="ph">{icon("image")}'
             f'{label}{s}</div></div>')
+
+
+def figure(img, alt, label, sub=""):
+    """Render <img> if a matching file exists in assets/ at build time, else a
+    labeled placeholder naming the expected file. Accepts any common image
+    format with the same base name (jpg/jpeg/png/webp/avif). Upload the file to
+    assets/ and the next build (Netlify runs build.py on deploy) swaps it in."""
+    found = None
+    if img:
+        stem = os.path.splitext(img)[0]
+        for ext in (".jpg", ".jpeg", ".png", ".webp", ".avif"):
+            if os.path.exists(os.path.join("assets", stem + ext)):
+                found = stem + ext
+                break
+    if found:
+        return (f'<div class="media reveal"><img src="assets/{found}" alt="{alt}" '
+                f'loading="lazy" decoding="async"></div>')
+    s = f'<small>{sub}</small>' if sub else ""
+    hint = f'<small>Drop <code>assets/{img}</code> to replace</small>' if img else ""
+    return (f'<div class="media reveal"><div class="ph">{icon("image")}'
+            f'{label}{s}{hint}</div></div>')
 
 # --------------------------------------------------------------------------
 # Shared chrome
@@ -229,8 +250,9 @@ def local_business_schema():
         "areaServed": [{"@type": "City", "name": a} for a in AREAS],
         "openingHoursSpecification": [{
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            "opens": "07:00", "closes": "18:00"}],
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+                          "Saturday", "Sunday"],
+            "opens": "06:00", "closes": "21:00"}],
         "sameAs": [u for u in CONFIG["social"].values() if u != "#"],
         "makesOffer": [
             {"@type": "Offer", "itemOffered": {"@type": "Service", "name": n}} for n in

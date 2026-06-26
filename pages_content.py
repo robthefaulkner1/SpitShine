@@ -6,6 +6,7 @@ def build(g):
     page = g["page"]; hero = g["hero"]; trustbar = g["trustbar"]; btn = g["btn"]
     icon = g["icon"]; cta_band = g["cta_band"]; checklist = g["checklist"]
     placeholder = g["placeholder"]; stars = g["stars"]; CONFIG = g["CONFIG"]
+    figure = g["figure"]
     AREAS = g["AREAS"]; STAR = g["STAR"]
     PHONE = CONFIG["phone_tel"]; PH_D = CONFIG["phone_display"]
 
@@ -103,13 +104,13 @@ def build(g):
             ])}
             <div class="btn-row" style="margin-top:8px">{btn("Book a Mobile Detail","book.html","primary")}</div>
           </div>
-          {placeholder("Mobile Detail Technician Polishing a Vehicle","[ Image: on-location detail at customer's driveway ]")}
+          {figure("home-detailing.jpg", "Mobile detailer polishing a vehicle at a San Antonio home", "Mobile Detail Technician Polishing a Vehicle")}
         </div>''',
         cls="section section--panel")
 
     ceramic_paint = section(
         f'''<div class="split reverse">
-          {placeholder("Ceramic Coating Water-Beading Effect","[ Image: water beading on a freshly coated hood ]")}
+          {figure("home-ceramic.jpg", "Water beading on a freshly ceramic-coated hood", "Ceramic Coating Water-Beading Effect")}
           <div class="body reveal">
             <span class="eyebrow">Protection That Lasts</span>
             <h2>Ceramic Coating &amp; Paint Correction</h2>
@@ -198,7 +199,7 @@ def build(g):
             <p>Today, we're proud to be one of San Antonio's most trusted mobile detailing companies,
             serving customers across the city and the surrounding communities.</p>
           </div>
-          {placeholder("Founder With a Freshly Detailed Vehicle","[ Image: founder / team portrait on location ]")}
+          {figure("about-story.jpg", "Spit Shine San Antonio founder with a freshly detailed vehicle", "Founder With a Freshly Detailed Vehicle")}
         </div>''')
 
     about_values = section(
@@ -215,7 +216,7 @@ def build(g):
 
     about_philosophy = section(
         f'''<div class="split reverse">
-          {placeholder("Technician Applying Ceramic Coating","[ Image: close-up of careful, panel-by-panel work ]")}
+          {figure("about-philosophy.jpg", "Technician carefully applying ceramic coating panel by panel", "Technician Applying Ceramic Coating")}
           <div class="body reveal">
             <span class="eyebrow">Our Philosophy</span>
             <h2>The Right Way, Every Time</h2>
@@ -297,8 +298,8 @@ def build(g):
 
     def service_block(anchor, ic, eyebrow, title, intro, included_title, included, benefits,
                       ideal, process_txt, ctas, reverse=False, ph_label="", ph_sub="",
-                      packages_html=""):
-        media = placeholder(ph_label, ph_sub)
+                      packages_html="", img=""):
+        media = figure(img, ph_label, ph_label, ph_sub)
         body = f'''<div class="body reveal">
             <div class="icon" style="width:54px;height:54px;border-radius:12px;display:grid;place-items:center;background:rgba(204,85,0,.12);border:1px solid rgba(204,85,0,.3);margin-bottom:16px">{icon(ic)}</div>
             <span class="eyebrow">{eyebrow}</span>
@@ -316,7 +317,8 @@ def build(g):
           <div class="card reveal"><h3 style="font-size:1.15rem">Ideal For</h3><p style="color:var(--silver)">{ideal}</p></div>
           <div class="card reveal"><h3 style="font-size:1.15rem">Our Process</h3><p style="color:var(--silver)">{process_txt}</p></div>
         </div>'''
-        btnrow = f'<div class="btn-row reveal" style="margin-top:30px">{ctas}</div>'
+        btnrow = (f'<div class="btn-row reveal" style="margin-top:30px;'
+                  f'justify-content:center">{ctas}</div>')
         return (f'<section class="section" id="{anchor}"><div class="container">'
                 f'{split}{cols}{packages_html}{btnrow}</div></section>')
 
@@ -338,7 +340,7 @@ def build(g):
         "We assess your vehicle's condition, then methodically work top to bottom on the exterior and "
         "front to back on the interior. Every section is inspected before we move to the next.",
         btn("Book a Mobile Detail", "book.html", "primary") + btn("Get a Quote", "contact.html", "secondary"),
-        ph_label="Full Interior &amp; Exterior Detail", ph_sub="[ Image: gleaming finished detail ]",
+        ph_label="Full Interior &amp; Exterior Detail", img="service-detailing.jpg",
         packages_html=packages_block("Mobile Detailing Packages", [
             ("The Spit Shine Express",
              "The fast-track to a clean, fresh vehicle. Perfect for busy San Antonians who want a polished "
@@ -375,7 +377,7 @@ def build(g):
         "detailed aftercare instructions.",
         btn("Learn About Ceramic Coatings", "ceramic-coatings.html", "primary") +
         btn("Get a Ceramic Quote", "contact.html", "secondary"),
-        reverse=True, ph_label="Ceramic Coating Water-Beading", ph_sub="[ Image: hydrophobic beading demo ]",
+        reverse=True, ph_label="Ceramic Coating Water-Beading", img="service-ceramic.jpg",
         packages_html=packages_block("Ceramic Coating Packages", [
             ("The Liquid Armor — Entry Coat",
              "A professional-grade single-layer ceramic coating providing 2–3 years of protection. "
@@ -410,7 +412,7 @@ def build(g):
         "focused lighting to ensure every defect is addressed.",
         btn("Learn About Paint Correction", "paint-correction.html", "primary") +
         btn("Get a Correction Quote", "contact.html", "secondary"),
-        ph_label="Before &amp; After Paint Correction", ph_sub="[ Image: split before/after panel ]",
+        ph_label="Before &amp; After Paint Correction", img="service-correction.jpg",
         packages_html=packages_block("Paint Correction Packages", [
             ("The Gloss Boss — One-Step",
              "Single-stage machine polish targeting light swirl marks, minor scratches, and dull oxidation. "
@@ -441,7 +443,7 @@ def build(g):
         "protect your vehicle from rust and dramatically reduce the visual impact. We'll show you what to "
         "expect before we start.",
         btn("Get a Touch-Up Quote", "contact.html", "primary"),
-        reverse=True, ph_label="Professional Paint Touch-Up", ph_sub="[ Image: chip repair close-up ]")
+        reverse=True, ph_label="Professional Paint Touch-Up", img="service-touchup.jpg")
 
     maintenance = section(
         f'''{head("Maintenance Plans", "Keep It Looking New Between Services",
@@ -935,7 +937,11 @@ def build(g):
         {area_chips()}
         <p class="center" style="margin-top:24px;color:var(--silver)">Not sure if we cover your location?
         Just ask — we'll let you know.</p>
-        <div style="margin-top:30px">{placeholder("Google Map — San Antonio Service Area","[ Embed: interactive Google Map of your service radius ]")}</div>''',
+        <div class="map-embed reveal" style="margin-top:30px">
+          <iframe title="Spit Shine San Antonio service area map"
+            src="https://maps.google.com/maps?q=San%20Antonio%2C%20TX&amp;z=10&amp;output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>''',
         cls="section section--alt")
 
     contact_cta = cta_band(
@@ -961,11 +967,6 @@ def build(g):
         buttons=btn("Check Availability", "#book-form", "primary", ico="calendar") + CALL,
         page_class="hero--page")
 
-    book_scarcity = f'''<section class="section section--tight section--alt"><div class="container reveal" style="text-align:center">
-      <p class="eyebrow" style="color:var(--orange-bright)">{icon("clock")} Limited Availability This Week</p>
-      <p class="lead" style="max-width:720px;margin:8px auto 0">Our schedule books up quickly, especially on
-      weekends — and ceramic coating slots fill fast. Secure your appointment now.</p>
-    </div></section>'''
 
     book_steps = section(
         f'''{head("How Booking Works", "Five Simple Steps")}
@@ -1017,4 +1018,4 @@ def build(g):
          "Ready to book? Schedule your mobile detailing, ceramic coating, or paint correction appointment "
          "with Spit Shine San Antonio. Fast booking, flexible scheduling. Book now!",
          "book.html", book_hero,
-         trustbar() + book_scarcity + book_steps + book_form + book_expect + book_cta)
+         trustbar() + book_steps + book_form + book_expect + book_cta)
