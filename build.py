@@ -21,7 +21,7 @@ CONFIG = {
     "domain": "https://getspitshined.com",         # canonical live domain
     # Paste the token from Google Search Console (HTML-tag verification) to
     # add the verification <meta> to every page. Leave "" if not using it.
-    "google_site_verification": "",
+    "google_site_verification": "dT4FZpMWy8QvIBUkkUJdFKKe6Mr5CoMp9AwIVbbx6-E",
     "phone_display": "(210) 392-2782",             # business phone (display)
     "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
     "email": "hello@getspitshined.com",            # << CONFIRM this inbox exists (or set your real email)
