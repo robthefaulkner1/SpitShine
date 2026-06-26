@@ -18,10 +18,13 @@ import os
 CONFIG = {
     "name": "Spit Shine San Antonio",
     "slogan": "San Antonio's Mobile Detailing & Ceramic Coating Specialists — We Come to You.",
-    "domain": "https://spitshinesa.com",          # update to your live domain
+    "domain": "https://getspitshined.com",         # canonical live domain
+    # Paste the token from Google Search Console (HTML-tag verification) to
+    # add the verification <meta> to every page. Leave "" if not using it.
+    "google_site_verification": "",
     "phone_display": "(210) 392-2782",             # business phone (display)
     "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
-    "email": "hello@spitshinesa.com",              # << REPLACE with real email
+    "email": "hello@getspitshined.com",            # << CONFIRM this inbox exists (or set your real email)
     "hours": "Mon–Sat: 7:00 AM – 6:00 PM · Closed Sunday",
     "city": "San Antonio",
     "region": "TX",
@@ -195,15 +198,20 @@ def local_business_schema():
     return {
         "@context": "https://schema.org",
         "@type": "AutoDetailing",
+        "@id": f"{CONFIG['domain']}/#business",
         "name": CONFIG["name"],
-        "image": f"{CONFIG['domain']}/assets/favicon.svg",
+        "image": f"{CONFIG['domain']}/assets/logo.png",
+        "logo": f"{CONFIG['domain']}/assets/logo.png",
         "url": CONFIG["domain"],
         "telephone": CONFIG["phone_tel"],
         "email": CONFIG["email"],
         "priceRange": "$$",
         "slogan": CONFIG["slogan"],
+        "description": ("Locally owned mobile auto detailing, ceramic coating, and paint "
+                        "correction serving San Antonio, TX and surrounding areas. We come to you."),
         "address": {"@type": "PostalAddress", "addressLocality": "San Antonio",
                     "addressRegion": "TX", "addressCountry": "US"},
+        "geo": {"@type": "GeoCoordinates", "latitude": 29.4241, "longitude": -98.4936},
         "areaServed": [{"@type": "City", "name": a} for a in AREAS],
         "openingHoursSpecification": [{
             "@type": "OpeningHoursSpecification",
@@ -228,6 +236,8 @@ def page(filename, title, desc, active, hero_html, body_html, extra_schema=None)
         f'<script type="application/ld+json">{json.dumps(s)}</script>'
         for s in schema_blocks)
     canonical = f"{CONFIG['domain']}/{'' if filename == 'index.html' else filename}"
+    gverify = (f'<meta name="google-site-verification" content="{CONFIG["google_site_verification"]}">\n'
+               if CONFIG.get("google_site_verification") else "")
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -236,15 +246,25 @@ def page(filename, title, desc, active, hero_html, body_html, extra_schema=None)
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="{canonical}">
-<meta name="theme-color" content="#0A0A0A">
+{gverify}<meta name="theme-color" content="#0A0A0A">
+<meta name="author" content="{CONFIG['name']}">
+<meta name="geo.region" content="US-TX">
+<meta name="geo.placename" content="San Antonio, Texas">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:site_name" content="{CONFIG['name']}">
+<meta property="og:locale" content="en_US">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{CONFIG['domain']}/assets/logo.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="{CONFIG['name']} logo">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{CONFIG['domain']}/assets/logo.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/logo.png">
@@ -317,6 +337,37 @@ def checklist(items, tight=False):
     return f'<ul class="{cls}">{lis}</ul>'
 
 
+# Pages in the sitemap, with relative priority.
+SITEMAP_PAGES = [
+    ("index.html", "1.0"), ("services.html", "0.9"),
+    ("ceramic-coatings.html", "0.9"), ("paint-correction.html", "0.9"),
+    ("about.html", "0.8"), ("contact.html", "0.8"), ("book.html", "0.8"),
+    ("reviews.html", "0.7"), ("faq.html", "0.7"),
+]
+
+
+def write_seo_files():
+    """Generate sitemap.xml and robots.txt from CONFIG['domain']."""
+    import datetime
+    dom = CONFIG["domain"].rstrip("/")
+    today = datetime.date.today().isoformat()
+    rows = []
+    for fn, pr in SITEMAP_PAGES:
+        loc = dom + "/" if fn == "index.html" else f"{dom}/{fn}"
+        rows.append(f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod>"
+                    f"<changefreq>weekly</changefreq><priority>{pr}</priority></url>")
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+               + "\n".join(rows) + "\n</urlset>\n")
+    with open("sitemap.xml", "w", encoding="utf-8") as fh:
+        fh.write(sitemap)
+    robots = ("User-agent: *\nAllow: /\n\n"
+              f"Sitemap: {dom}/sitemap.xml\n")
+    with open("robots.txt", "w", encoding="utf-8") as fh:
+        fh.write(robots)
+    print("wrote sitemap.xml, robots.txt")
+
+
 # --------------------------------------------------------------------------
 # Build everything
 # --------------------------------------------------------------------------
@@ -325,4 +376,5 @@ import pages_content  # noqa: E402  (content lives in a sibling module)
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     pages_content.build(globals())
+    write_seo_files()
     print("\nDone. Open index.html in a browser.")
