@@ -19,8 +19,8 @@ CONFIG = {
     "name": "Spit Shine San Antonio",
     "slogan": "San Antonio's Mobile Detailing & Ceramic Coating Specialists — We Come to You.",
     "domain": "https://spitshinesa.com",          # update to your live domain
-    "phone_display": "(210) 555-0199",             # << REPLACE with real number
-    "phone_tel": "+12105550199",                   # << REPLACE (E.164 format)
+    "phone_display": "(210) 392-2782",             # business phone (display)
+    "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
     "email": "hello@spitshinesa.com",              # << REPLACE with real email
     "hours": "Mon–Sat: 7:00 AM – 6:00 PM · Closed Sunday",
     "city": "San Antonio",
