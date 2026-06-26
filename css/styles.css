@@ -423,6 +423,9 @@ p { color: var(--light); }
 .footer-col a { color: var(--silver); font-size: .94rem; }
 .footer-col a:hover { color: var(--orange-bright); }
 .footer-contact a, .footer-contact p { color: var(--silver); font-size: .94rem; margin-bottom: 10px; display: flex; align-items: center; gap: 9px; }
+.footer-contact .footer-social { flex-wrap: wrap; gap: 6px 14px; }
+.footer-contact .footer-social a { display: inline; margin: 0; color: var(--orange-bright); }
+.footer-contact .footer-social a:hover { color: var(--orange); }
 .footer-contact svg { width: 16px; height: 16px; color: var(--orange); flex: none; }
 .footer-bottom { border-top: 1px solid var(--line); margin-top: 44px; padding-top: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--muted); font-size: .82rem; }
 .footer-bottom .badges { display: flex; gap: 16px; flex-wrap: wrap; }
