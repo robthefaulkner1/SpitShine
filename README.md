@@ -94,11 +94,11 @@ SEO), and (4) request indexing for the homepage.
 
 ## Booking & forms
 
-**Booking → Calendly.** Every "Book" CTA opens the Calendly scheduler in a popup, and the
-Book Appointment page (`book.html`) embeds it inline. The scheduling link lives in
-`CONFIG["calendly_url"]` — update it there and rebuild to point at a different Calendly. The
-popup wiring is in `js/main.js` (it targets links to `book.html` / `#book-form`, or any element
-with the `.book-link` class).
+**Booking → native form (Netlify Forms).** The Book Appointment page (`book.html`) has a booking
+form styled like the contact form; "Book" CTAs link to it (`book.html#book-form`). It submits to
+Netlify Forms under the form name `booking` (separate from `contact`), so booking requests and
+quote requests are tracked separately in the Netlify dashboard. Add an email notification for the
+`booking` form the same way as `contact`.
 
 **Contact / quote form → Netlify Forms.** The contact form is wired to **Netlify Forms**
 (built into the hosting — no third-party account or API key). On submit, `js/main.js` POSTs the
