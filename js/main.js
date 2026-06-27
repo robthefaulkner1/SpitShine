@@ -82,17 +82,22 @@
     });
   }
 
-  /* ---- Forms (front-end demo handling) ----
-     No backend is wired yet. We intercept submission, show a
-     confirmation, and (if a real endpoint is configured on the
-     <form data-endpoint="..."> attribute) POST to it.            */
+  /* ---- Forms ----
+     Submits to Netlify Forms via AJAX (POST url-encoded to the site root),
+     so the visitor stays on the page and sees an inline confirmation.
+     Netlify captures the submission (dashboard + email notification).
+     An explicit data-endpoint overrides the target if ever needed.       */
   document.querySelectorAll("form[data-spitshine]").forEach(function (form) {
-    var success = form.querySelector(".form-success");
+    var wrap = form.closest(".form-wrap") || form.parentElement;
+    var success = (wrap && wrap.querySelector(".form-success")) || form.querySelector(".form-success");
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
 
       var endpoint = form.getAttribute("data-endpoint");
+      var target = (endpoint && endpoint.indexOf("REPLACE") === -1) ? endpoint : "/";
+      var body = new URLSearchParams(new FormData(form)).toString();
+
       var done = function () {
         if (success) {
           success.classList.add("show");
@@ -101,16 +106,11 @@
         form.reset();
       };
 
-      if (endpoint && endpoint.indexOf("REPLACE") === -1) {
-        fetch(endpoint, {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" }
-        }).then(done).catch(done);
-      } else {
-        // No live endpoint yet — confirm to the visitor anyway.
-        done();
-      }
+      fetch(target, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body
+      }).then(done).catch(done);
     });
   });
 })();

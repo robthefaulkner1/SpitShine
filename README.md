@@ -100,9 +100,13 @@ Book Appointment page (`book.html`) embeds it inline. The scheduling link lives 
 popup wiring is in `js/main.js` (it targets links to `book.html` / `#book-form`, or any element
 with the `.book-link` class).
 
-**Contact / quote form.** The contact form runs **front-end only** — on submit it shows a
-confirmation message. To receive real submissions by email, paste a Formspree endpoint into
-`CONFIG["form_endpoint"]` and rebuild; `js/main.js` will POST to it automatically.
+**Contact / quote form → Netlify Forms.** The contact form is wired to **Netlify Forms**
+(built into the hosting — no third-party account or API key). On submit, `js/main.js` POSTs the
+data to the site root; Netlify captures it (visible under **Forms** in the Netlify dashboard).
+To get emailed on each submission: Netlify dashboard → **Forms → Form notifications → Add
+notification → Email**, and send it to `rob@getspitshined.com`. The form is named `contact`
+and includes a honeypot for spam. To use a different backend instead (e.g. Web3Forms), put its
+URL in `CONFIG["form_endpoint"]` and rebuild.
 
 ---
 

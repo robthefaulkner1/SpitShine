@@ -878,7 +878,10 @@ def build(g):
       <div class="form-wrap reveal">
         <div class="form-success">Thanks — your message is on its way! We aim to respond to all
         inquiries within one business hour during business hours.</div>
-        <form data-spitshine data-endpoint="{CONFIG['form_endpoint']}" novalidate>
+        <form data-spitshine name="contact" method="POST" data-netlify="true"
+              netlify-honeypot="bot-field" action="/?contact=success" novalidate>
+          <input type="hidden" name="form-name" value="contact">
+          <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
           <div class="form-grid">
             <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" name="name" required placeholder="Your name"></div>
             <div class="field"><label>Phone Number <span class="req">*</span></label><input type="tel" name="phone" required placeholder="(210) 555-0123"></div>
@@ -895,8 +898,7 @@ def build(g):
               <select name="best_time"><option>Morning</option><option>Afternoon</option><option>Evening</option></select></div>
           </div>
           <div style="margin-top:22px">{submit_btn("Send My Message", "mail")}</div>
-          <p class="form-note">No live form backend is connected yet. Add your Formspree (or CRM) endpoint in
-          <code>build.py → CONFIG["form_endpoint"]</code> to start receiving submissions by email.</p>
+          <p class="form-note">Prefer to talk now? Call or text {PH_D}. We respond to messages within one business hour.</p>
         </form>
       </div>'''
 

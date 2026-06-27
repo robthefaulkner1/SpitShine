@@ -28,8 +28,10 @@ CONFIG = {
     "hours": "Mon–Sun: 6:00 AM – 9:00 PM",
     "city": "San Antonio",
     "region": "TX",
-    # Optional: paste a Formspree/endpoint URL to make the forms live.
-    "form_endpoint": "https://formspree.io/f/REPLACE_ME",
+    # The contact form posts to Netlify Forms (built into the hosting) — no
+    # endpoint needed. This optional override lets you point the form at a
+    # different backend (e.g. Web3Forms) if you ever move off Netlify.
+    "form_endpoint": "",
     # Calendly scheduling link. Every "Book" CTA opens this in a popup, and
     # the Book Appointment page embeds it inline.
     "calendly_url": "https://calendly.com/faulkner-rob14?background_color=000000&text_color=cb5b11&primary_color=9a9a9a",
