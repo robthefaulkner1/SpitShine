@@ -22,9 +22,9 @@ CONFIG = {
     # Paste the token from Google Search Console (HTML-tag verification) to
     # add the verification <meta> to every page. Leave "" if not using it.
     "google_site_verification": "dT4FZpMWy8QvIBUkkUJdFKKe6Mr5CoMp9AwIVbbx6-E",
-    # Google Analytics 4 measurement ID (G-XXXXXXXXXX). Adds gtag.js to every
-    # page. Leave "" to disable.
-    "ga_measurement_id": "G-JZCZXMXQDG",
+    # Google Analytics 4 measurement IDs (one or more). Adds gtag.js to every
+    # page and configures each property. Empty the list to disable.
+    "ga_measurement_ids": ["G-JZCZXMXQDG", "G-442BBMRZZD"],
     "phone_display": "(210) 392-2782",             # business phone (display)
     "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
     "email": "rob@getspitshined.com",
@@ -276,16 +276,20 @@ def page(filename, title, desc, active, hero_html, body_html, extra_schema=None)
     canonical = f"{CONFIG['domain']}/{'' if filename == 'index.html' else filename}"
     gverify = (f'<meta name="google-site-verification" content="{CONFIG["google_site_verification"]}">\n'
                if CONFIG.get("google_site_verification") else "")
-    ga_id = CONFIG.get("ga_measurement_id", "")
-    ga = (f'''<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={ga_id}"></script>
+    ga_ids = CONFIG.get("ga_measurement_ids") or (
+        [CONFIG["ga_measurement_id"]] if CONFIG.get("ga_measurement_id") else [])
+    ga = ""
+    if ga_ids:
+        configs = "\n".join(f"  gtag('config', '{i}');" for i in ga_ids)
+        ga = (f'''<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={ga_ids[0]}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){{dataLayer.push(arguments);}}
   gtag('js', new Date());
-  gtag('config', '{ga_id}');
+{configs}
 </script>
-''' if ga_id else "")
+''')
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
