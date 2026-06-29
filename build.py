@@ -22,6 +22,9 @@ CONFIG = {
     # Paste the token from Google Search Console (HTML-tag verification) to
     # add the verification <meta> to every page. Leave "" if not using it.
     "google_site_verification": "dT4FZpMWy8QvIBUkkUJdFKKe6Mr5CoMp9AwIVbbx6-E",
+    # Google Analytics 4 measurement ID (G-XXXXXXXXXX). Adds gtag.js to every
+    # page. Leave "" to disable.
+    "ga_measurement_id": "G-JZCZXMXQDG",
     "phone_display": "(210) 392-2782",             # business phone (display)
     "phone_tel": "+12103922782",                   # business phone (E.164 for tel: links)
     "email": "rob@getspitshined.com",
@@ -273,13 +276,23 @@ def page(filename, title, desc, active, hero_html, body_html, extra_schema=None)
     canonical = f"{CONFIG['domain']}/{'' if filename == 'index.html' else filename}"
     gverify = (f'<meta name="google-site-verification" content="{CONFIG["google_site_verification"]}">\n'
                if CONFIG.get("google_site_verification") else "")
+    ga_id = CONFIG.get("ga_measurement_id", "")
+    ga = (f'''<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={ga_id}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{ga_id}');
+</script>
+''' if ga_id else "")
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
+{ga}<title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="{canonical}">
